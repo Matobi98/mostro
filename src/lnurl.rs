@@ -45,9 +45,10 @@ const LNURL_DNS_TIMEOUT: Duration = Duration::from_secs(2);
 /// how long a buyer-chosen server may talk, not how much it may send: 4 s at
 /// datacenter speed is hundreds of MiB held in memory. Measured legitimate
 /// bodies are 0.3-0.8 KB, and 4.6 KB for the one server seen shipping a base64
-/// thumbnail in `metadata` (LUD-06 allows up to ~133 KiB, which this cap would
-/// refuse). Mostro never reads `metadata`, so such a server is not supported.
-const MAX_LNURL_RESPONSE_BYTES: usize = 64 * 1024;
+/// thumbnail in `metadata`. 256 KiB covers the largest LUD-06 document (the
+/// spec allows ~133 KiB of thumbnail) and is still negligible next to the
+/// hundreds of MiB it closes off.
+const MAX_LNURL_RESPONSE_BYTES: usize = 256 * 1024;
 
 #[cfg(test)]
 static ALLOW_PRIVATE_LNURL_HOSTS: AtomicBool = AtomicBool::new(false);
